@@ -1742,7 +1742,7 @@ class Dot(Graph):
         self.prog = prog
 
 
-    def write(self, path, prog=None, format='raw'):
+    def write(self, path, prog=None, format='raw', encoding = None):
         """Writes a graph to a file.
 
         Given a filename 'path' it will open/create and truncate
@@ -1766,10 +1766,11 @@ class Dot(Graph):
         if prog is None:
             prog = self.prog
         if format == 'raw':
+            if encoding is None:
+                encoding = "UTF-8"
             s = self.to_string()
-            mode = 'wt'
-            if not PY3:
-                s = unicode(s)
+            mode = 'wb'
+            s = s.encode(encoding, errors='ignore')
         else:
             s = self.create(prog, format)
             mode = 'wb'
